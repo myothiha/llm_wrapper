@@ -1,0 +1,3 @@
+torch==2.6.0
+torchvision==0.21.0
+transformers @ git+https://github.com/huggingface/transformers@bf41e54fc8242dafa31bf6203e3d505bcb907119

@@ -10,9 +10,8 @@ class LLMWrapper:
         self.tokenizer = None
         self.model = None
         self.pipe = None
+        self.pipeline_kwargs = pipeline_kwargs
         self.quantization_bits = quantization_bits
-        self._load()
-        self._build_pipeline(pipeline_kwargs or {})
 
     def _load(self):
         self.tokenizer = AutoTokenizer.from_pretrained(
@@ -66,6 +65,10 @@ class LLMWrapper:
         self.pipe = pipeline(**default_kwargs)
 
     def __call__(self, prompt: str, **generate_kwargs):
+        if self.model is None:
+            self._load()
+            self._build_pipeline(self.pipeline_kwargs or {})
+
         if self.pipe is None:
             raise ValueError("Pipeline not initialized.")
         result = self.pipe(prompt, **generate_kwargs)

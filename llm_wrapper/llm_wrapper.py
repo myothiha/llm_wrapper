@@ -1,7 +1,7 @@
 # llm_loader/llm_wrapper.py
 
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline, GPTQConfig
 from transformers import BitsAndBytesConfig
 
 class LLMWrapper:
@@ -22,7 +22,14 @@ class LLMWrapper:
         self.tokenizer.pad_token = self.tokenizer.eos_token
 
         if self.quantization_bits > 0:
-            if self.quantization_bits == 4:
+            if self.quantization_bits == 2:
+                quant_config = GPTQConfig(
+                    bits=2,
+                    group_size=128,
+                    dataset="wikitext2",
+                    tokenizer=self.tokenizer
+                )
+            elif self.quantization_bits == 4:
                 quant_config = BitsAndBytesConfig(
                     load_in_4bit=True,
                     bnb_4bit_compute_dtype=torch.float16,

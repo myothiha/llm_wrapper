@@ -76,9 +76,13 @@ class LLMWrapper:
         return response
 
     def get_model(self):
+        if self.model is None:
+            self._load()
         return self.model
 
     def get_tokenizer(self):
+        if self.tokenizer is None:
+            self._load()
         return self.tokenizer
 
     def get_pipeline(self):

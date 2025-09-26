@@ -240,7 +240,7 @@ if __name__ == "__main__":
     print("\nMultimodal generation:")
     multimodal_response = ollama.generate_multimodal(
         prompt="Describe the main object and its condition.",
-        images="example.jpg",
+        images=["example.jpg"],
         options={"temperature": 0.1}
     )
     print(multimodal_response)

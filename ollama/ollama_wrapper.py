@@ -23,6 +23,15 @@ class OllamaWrapper:
         self.system_prompt = None
         self.history = []
 
+    def reset_history(self):
+        if self.multi_turn:
+            self.history = []
+            if self.system_prompt:
+                self.history.append({"role": "system", "content": self.system_prompt})
+        else:
+            raise ValueError("History can only be reset in multi-turn mode.")
+
+
     def set_system_prompt(self, prompt: str):
         if self.multi_turn:
             self.system_prompt = prompt
@@ -99,6 +108,7 @@ class OllamaWrapper:
                 yield collected
             return stream_generator()
         else:
+            # print("Response:\n", response.json())
             result = response.json()["message"]["content"]
             self.history.append({"role": "assistant", "content": result})
             return result

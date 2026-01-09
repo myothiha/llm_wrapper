@@ -82,6 +82,17 @@ class LLMWrapper:
         result = self.pipe(prompt, **generate_kwargs)
         response = result[0]['generated_text']
         return response
+    
+    def clear(self):
+        if self.pipe is not None:
+            self.pipe = None
+        if self.model is not None:
+            del self.model
+            self.model = None
+        if self.tokenizer is not None:
+            del self.tokenizer
+            self.tokenizer = None
+        
 
     def get_model(self):
         if self.model is None:

@@ -24,6 +24,10 @@ class OllamaWrapper:
         self.system_prompt = None
         self.history = []
 
+        # GPU cooldown config — tunable per deployment via .env
+        self.gpu_temp_threshold = int(os.getenv("GPU_TEMP_THRESHOLD", 80))
+        self.gpu_cooldown_time = int(os.getenv("GPU_COOLDOWN_TIME", 60))
+
     def reset_history(self):
         if self.multi_turn:
             self.history = []
@@ -46,7 +50,7 @@ class OllamaWrapper:
     def __call__(self, prompt: str, images = None, stream: bool = False, **kwargs):
         # Check GPU temperature and pause if it exceeds 80 degrees
         from libs.nvidia_usage_info.gpu_info import cooldown_gpu
-        cooldown_gpu(threshold=80, cooldown_time=60)
+        cooldown_gpu(threshold=self.gpu_temp_threshold, cooldown_time=self.gpu_cooldown_time)
         if images is None:
             if self.multi_turn:
                 # print("Using multi-turn mode")

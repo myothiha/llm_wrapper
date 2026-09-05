@@ -13,6 +13,11 @@ except ImportError:
     ClaudeAIWrapper = None
 
 try:
+    from .gemini_ai_wrapper import GeminiAIWrapper
+except ImportError:
+    GeminiAIWrapper = None
+
+try:
     from .gemma_lvlm_wrapper import LVLMWrapper as GemmaLVLMWrapper
 except ImportError:
     GemmaLVLMWrapper = None
@@ -29,6 +34,7 @@ except ImportError:
 
 __all__ = [
     "ClaudeAIWrapper",
+    "GeminiAIWrapper",
     "GemmaLVLMWrapper",
     "GPTLLMWrapper",
     "MistralAIWrapper",
